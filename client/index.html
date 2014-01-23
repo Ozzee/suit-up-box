@@ -25,31 +25,38 @@
         var socket = io.connect();
 
         $scope.name = '';
-        $scope.text = '';
+        $scope.color = 'ffffff';
 
         socket.on('connect', function () {
           console.log("Client connected.")
         });
 
         socket.on('message', function (msg) {
-          console.log("Received: " + msg.text);
-          $scope.suit = msg.text;
+          $scope.color = msg.text;
+          console.log("Received: " + $scope.color);
+          $("body").css("background-color", $scope.color);
           $scope.$apply();
         });
 
-        $scope.send = function send(msg) {
-          console.log('Sending message:', msg);
-          socket.emit('message', msg);
+        $scope.suitup = function send() {
+          console.log('Suit-Up');
+          socket.emit('message', '#000000');
         };
-        $scope.suit = "No-suit";
+
+        $scope.party = function send() {
+          // TODO: Calculate color based on name, maybe
+          var color = 'rgb(241, 51, 218)';
+          console.log('Party: ', color);
+          socket.emit('message', color);
+        };
+        
       }
     </script>
   </head>
   <body>
-    <div class="container" ng-controller="statusController">
-      <h1>{{suit}}</h1>
-      <button class="btn" ng-click="send('Suit-Up!')">Suit-Up</button>
-      <button class="btn" ng-click="send('Party!')">Party</button>
+    <div class="" ng-controller="statusController">
+      <button class="btn" ng-click="suitup()">Suit-Up</button>
+      <button class="btn" ng-click="party()">Party</button>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/jquery.min.js"></script>
